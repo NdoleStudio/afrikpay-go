@@ -9,7 +9,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/NdoleStudio/afrikpay-go)](https://pkg.go.dev/github.com/NdoleStudio/afrikpay-go)
 
 
-This package provides a `go` client for the afrikpay HTTP API https://developer.afrikpay.com
+This package provides a Go client for the AfrikPay HTTP API https://developer.afrikpay.com
 
 ## Installation
 
