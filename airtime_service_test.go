@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/NdoleStudio/go-http-client/internal/helpers"
-	"github.com/NdoleStudio/go-http-client/internal/stubs"
+	"github.com/NdoleStudio/afrikpay-go/internal/helpers"
+	"github.com/NdoleStudio/afrikpay-go/internal/stubs"
 	"github.com/stretchr/testify/assert"
 )
 
