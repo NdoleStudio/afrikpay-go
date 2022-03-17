@@ -26,7 +26,7 @@ func WithHTTPClient(httpClient *http.Client) Option {
 	})
 }
 
-// WithBaseURL set's the base url for the flutterwave API
+// WithBaseURL set's the base url for the afrikpay API
 func WithBaseURL(baseURL string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
 		if baseURL != "" {
@@ -35,12 +35,30 @@ func WithBaseURL(baseURL string) Option {
 	})
 }
 
-// WithDelay sets the delay in milliseconds before a response is gotten.
-// The delay must be > 0 for it to be used.
-func WithDelay(delay int) Option {
+// WithAPIKey sets the API Key
+func WithAPIKey(apiKey string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
-		if delay > 0 {
-			config.delay = delay
-		}
+		config.apiKey = apiKey
+	})
+}
+
+// WithAgentID sets the Agent ID for api calls
+func WithAgentID(agentID string) Option {
+	return clientOptionFunc(func(config *clientConfig) {
+		config.agentID = agentID
+	})
+}
+
+// WithAgentPlatform sets the agent platform
+func WithAgentPlatform(agentPlatform string) Option {
+	return clientOptionFunc(func(config *clientConfig) {
+		config.agentPlatform = agentPlatform
+	})
+}
+
+// WithAgentPassword sets the agent password
+func WithAgentPassword(agentPassword string) Option {
+	return clientOptionFunc(func(config *clientConfig) {
+		config.agentPassword = agentPassword
 	})
 }

@@ -3,12 +3,14 @@ package client
 import (
 	"bytes"
 	"context"
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strconv"
+	"strings"
 )
 
 type service struct {
@@ -18,12 +20,15 @@ type service struct {
 // Client is the campay API client.
 // Do not instantiate this client with Client{}. Use the New method instead.
 type Client struct {
-	httpClient *http.Client
-	common     service
-	baseURL    string
-	delay      int
+	httpClient    *http.Client
+	common        service
+	baseURL       string
+	apiKey        string
+	agentID       string
+	agentPlatform string
+	agentPassword string
 
-	Status *statusService
+	Airtime *airtimeService
 }
 
 // New creates and returns a new campay.Client from a slice of campay.ClientOption.
@@ -35,13 +40,16 @@ func New(options ...Option) *Client {
 	}
 
 	client := &Client{
-		httpClient: config.httpClient,
-		delay:      config.delay,
-		baseURL:    config.baseURL,
+		httpClient:    config.httpClient,
+		baseURL:       config.baseURL,
+		apiKey:        config.apiKey,
+		agentID:       config.agentID,
+		agentPlatform: config.agentPlatform,
+		agentPassword: config.agentPassword,
 	}
 
 	client.common.client = client
-	client.Status = (*statusService)(&client.common)
+	client.Airtime = (*airtimeService)(&client.common)
 	return client
 }
 
@@ -68,21 +76,7 @@ func (client *Client) newRequest(ctx context.Context, method, uri string, body i
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 
-	if client.delay > 0 {
-		client.addURLParams(req, map[string]string{"sleep": strconv.Itoa(client.delay)})
-	}
-
 	return req, nil
-}
-
-// addURLParams adds urls parameters to an *http.Request
-func (client *Client) addURLParams(request *http.Request, params map[string]string) *http.Request {
-	q := request.URL.Query()
-	for key, value := range params {
-		q.Add(key, value)
-	}
-	request.URL.RawQuery = q.Encode()
-	return request
 }
 
 // do carries out an HTTP request and returns a Response
@@ -109,6 +103,12 @@ func (client *Client) do(req *http.Request) (*Response, error) {
 	}
 
 	return resp, nil
+}
+
+// hash does md5 hash of parameters
+func (client *Client) hash(params ...string) string {
+	sum := md5.Sum([]byte(strings.Join(params, "")))
+	return hex.EncodeToString(sum[:])
 }
 
 // newResponse converts an *http.Response to *Response
