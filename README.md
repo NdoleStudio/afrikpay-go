@@ -30,6 +30,7 @@ import "github.com/NdoleStudio/afrikpay-go"
 
 - [Airtime](#airtime)
     - `POST /api/airtime/v2/`: Transfer airtime
+    - `POST /api/airtime/status/v2/`: Airtime Status
 
 ## Usage
 
@@ -46,10 +47,10 @@ import (
 
 func main()  {
   client := afrikpay.New(
-    afrikpay.WithAgentID(/* agent id */),
-    afrikpay.WithAPIKey(/* api key */),
-    afrikpay.WithAgentPassword(/* agnet password */),
-    afrikpay.WithAgentPlatform(/* agent platform */),
+    afrikpay.WithAgentID(""/* agent id */),
+    afrikpay.WithAPIKey(""/* api key */),
+    afrikpay.WithAgentPassword(""/* agent password */),
+    afrikpay.WithAgentPlatform(""/* agent platform */),
   )
 }
 ```
@@ -84,7 +85,21 @@ if err != nil {
     log.Fatal(err)
 }
 
-log.Println(status.Description) // OK
+log.Println(status.Code) // 200
+```
+
+#### `POST /api/airtime/status/v2/`: Airtime Status
+
+The Airtime Status API is intended for getting the status of a airtime transaction
+
+```go
+status, response, err := afrikpay.Airtime.Status(context.Background(), ""/* Transaction ID */)
+
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Println(status.Code) // 200
 ```
 
 ## Testing

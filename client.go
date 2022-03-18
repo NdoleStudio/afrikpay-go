@@ -29,6 +29,7 @@ type Client struct {
 	agentPassword string
 
 	Airtime *airtimeService
+	Account *accountService
 }
 
 // New creates and returns a new campay.Client from a slice of campay.ClientOption.
@@ -50,6 +51,7 @@ func New(options ...Option) *Client {
 
 	client.common.client = client
 	client.Airtime = (*airtimeService)(&client.common)
+	client.Account = (*accountService)(&client.common)
 	return client
 }
 
