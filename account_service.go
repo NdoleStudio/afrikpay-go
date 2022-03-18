@@ -12,7 +12,7 @@ type accountService service
 // Balance is used for the partner to get the Balance of his account
 //
 // API Docs: https://developer.afrikpay.com/documentation/account/agent/balance/v2/
-func (service *accountService) Balance(ctx context.Context) (map[string]interface{}, *Response, error) {
+func (service *accountService) Balance(ctx context.Context) (*AccountBalanceResponse, *Response, error) {
 	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/account/agent/balance/v2/", map[string]string{
 		"agentid":       service.client.agentID,
 		"agentplatform": service.client.agentPlatform,
@@ -27,10 +27,10 @@ func (service *accountService) Balance(ctx context.Context) (map[string]interfac
 		return nil, response, err
 	}
 
-	status := map[string]interface{}{}
-	if err = json.Unmarshal(*response.Body, &status); err != nil {
+	balance := new(AccountBalanceResponse)
+	if err = json.Unmarshal(*response.Body, &balance); err != nil {
 		return nil, response, err
 	}
 
-	return status, response, nil
+	return balance, response, nil
 }

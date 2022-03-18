@@ -10,3 +10,18 @@ func AccountBalanceWithError() []byte {
 		}
 `)
 }
+
+// AccountBalance is a dummy json response for the `/api/account/agent/balance/v2/` endpoint
+func AccountBalance() []byte {
+	return []byte(`
+		{
+			"code":200,
+			"message":"Success",
+			"result":{
+				"name":"COMPANY_NAME",
+				"mainbalance":"100",
+				"maindeposit":"200"
+			}
+		}
+`)
+}

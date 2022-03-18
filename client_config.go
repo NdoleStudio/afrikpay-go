@@ -14,6 +14,6 @@ type clientConfig struct {
 func defaultClientConfig() *clientConfig {
 	return &clientConfig{
 		httpClient: http.DefaultClient,
-		baseURL:    "http://34.86.5.170:8086",
+		baseURL:    "https://api.afrikpay.com",
 	}
 }

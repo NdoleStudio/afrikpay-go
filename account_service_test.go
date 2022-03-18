@@ -58,6 +58,36 @@ func TestAccountService_BalanceRequest(t *testing.T) {
 	server.Close()
 }
 
+func TestAccountService_BalanceWithoutError(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	server := helpers.MakeTestServer(http.StatusOK, stubs.AccountBalance())
+	client := New(WithBaseURL(server.URL))
+
+	// Act
+	transaction, response, err := client.Account.Balance(context.Background())
+
+	// Assert
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
+	assert.Equal(t, &AccountBalanceResponse{
+		Code:    200,
+		Message: "Success",
+		Result: &AccountBalance{
+			Name:        "COMPANY_NAME",
+			MainBalance: "100",
+			MainDeposit: "200",
+		},
+	}, transaction)
+
+	assert.True(t, transaction.IsSuccessfull())
+
+	// Teardown
+	server.Close()
+}
+
 func TestAccountService_BalanceRequestWithError(t *testing.T) {
 	// Setup
 	t.Parallel()
@@ -65,10 +95,9 @@ func TestAccountService_BalanceRequestWithError(t *testing.T) {
 	// Arrange
 	server := helpers.MakeTestServer(http.StatusOK, stubs.TransferWithError())
 	client := New(WithBaseURL(server.URL))
-	params := AirtimeTransferParams{}
 
 	// Act
-	transaction, _, err := client.Airtime.Transfer(context.Background(), params)
+	transaction, _, err := client.Account.Balance(context.Background())
 
 	// Assert
 	assert.NoError(t, err)
