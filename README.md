@@ -31,6 +31,8 @@ import "github.com/NdoleStudio/afrikpay-go"
 - [Airtime](#airtime)
     - `POST /api/airtime/v2/`: Transfer airtime
     - `POST /api/airtime/status/v2/`: Airtime Status
+- [Account](#account)
+  - `POST /api/account/agent/balance/v2/`: Account Balance
 
 ## Usage
 
@@ -73,7 +75,7 @@ if err != nil {
 Transfer is intended for communication / Internet credit transfer operations to telephone numbers.
 
 ```go
-status, response, err := afrikpay.Airtime.Transfer(context.Background(), &AirtimeTransferParams{
+transaction, _, err := afrikpay.Airtime.Transfer(context.Background(), &AirtimeTransferParams{
     Operator:          "mtn",
     PurchaseReference: "test-ref",
     Amount:            "987",
@@ -93,7 +95,7 @@ log.Println(status.Code) // 200
 The Airtime Status API is intended for getting the status of a airtime transaction
 
 ```go
-status, response, err := afrikpay.Airtime.Status(context.Background(), ""/* Transaction ID */)
+transaction, _, err := afrikpay.Airtime.Status(context.Background(), ""/* Transaction ID */)
 
 if err != nil {
     log.Fatal(err)
@@ -101,6 +103,23 @@ if err != nil {
 
 log.Println(status.Code) // 200
 ```
+
+
+### Account
+
+#### `POST /api/account/agent/balance/v2/`: Account Balance
+
+The Balance API is used for the partner to get the Balance of their account
+
+```go
+balance, _, err := afrikpay.Account.Balance(context.Background())
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Println(status.Code) // 200
+```
+
 
 ## Testing
 
