@@ -40,3 +40,30 @@ func (service *airtimeService) Transfer(ctx context.Context, params AirtimeTrans
 
 	return status, response, nil
 }
+
+// Status is intended for getting the status of an airtime transaction
+//
+// API Docs: https://developer.afrikpay.com/documentation/airtime/status/v2/
+func (service *airtimeService) Status(ctx context.Context, transactionID string) (*AirtimeResponse, *Response, error) {
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/status/v2/", map[string]string{
+		"processingnumber": transactionID,
+		"agentid":          service.client.agentID,
+		"agentplatform":    service.client.agentPlatform,
+		"hash":             service.client.hash(transactionID, service.client.apiKey),
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	response, err := service.client.do(request)
+	if err != nil {
+		return nil, response, err
+	}
+
+	status := new(AirtimeResponse)
+	if err = json.Unmarshal(*response.Body, status); err != nil {
+		return nil, response, err
+	}
+
+	return status, response, nil
+}
