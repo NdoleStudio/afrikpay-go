@@ -17,7 +17,7 @@ type service struct {
 	client *Client
 }
 
-// Client is the campay API client.
+// Client is the afrikpay API client.
 // Do not instantiate this client with Client{}. Use the New method instead.
 type Client struct {
 	httpClient    *http.Client
@@ -30,9 +30,10 @@ type Client struct {
 
 	Airtime *airtimeService
 	Account *accountService
+	Bill    *billService
 }
 
-// New creates and returns a new campay.Client from a slice of campay.ClientOption.
+// New creates and returns a new *Client from a slice of Option.
 func New(options ...Option) *Client {
 	config := defaultClientConfig()
 
@@ -50,8 +51,11 @@ func New(options ...Option) *Client {
 	}
 
 	client.common.client = client
+
 	client.Airtime = (*airtimeService)(&client.common)
 	client.Account = (*accountService)(&client.common)
+	client.Bill = (*billService)(&client.common)
+
 	return client
 }
 

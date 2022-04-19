@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// airtimeService is the API client for the `/` endpoint
+// airtimeService is the API client for the `/api/airtime/` endpoint
 type airtimeService service
 
 // Transfer is intended for communication / Internet credit transfer operations to telephone numbers.

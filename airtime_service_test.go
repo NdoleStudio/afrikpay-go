@@ -37,7 +37,7 @@ func TestAirtimeService_TransferRequest(t *testing.T) {
 		PurchaseReference: "test-ref",
 		Amount:            "987",
 		PhoneNumber:       "00000000",
-		Mode:              AirtimeModeAccount,
+		Mode:              ModeAccount,
 	}
 	expectedRequest := map[string]interface{}{
 		"operator":      params.Operator,
@@ -99,7 +99,7 @@ func TestAirtimeService_TransferWithoutError(t *testing.T) {
 		},
 	}, transaction)
 
-	assert.True(t, transaction.IsSuccessfull())
+	assert.True(t, transaction.IsSuccessful())
 
 	// Teardown
 	server.Close()
@@ -124,7 +124,7 @@ func TestAirtimeService_TransferWithError(t *testing.T) {
 	assert.Equal(t, "412: bad password", transaction.Message)
 	assert.Equal(t, http.StatusInternalServerError, transaction.Code)
 	assert.Nil(t, transaction.Result)
-	assert.False(t, transaction.IsSuccessfull())
+	assert.False(t, transaction.IsSuccessful())
 
 	// Teardown
 	server.Close()
@@ -202,7 +202,7 @@ func TestAirtimeService_StatusWithoutError(t *testing.T) {
 		},
 	}, transaction)
 
-	assert.True(t, transaction.IsSuccessfull())
+	assert.True(t, transaction.IsSuccessful())
 
 	// Teardown
 	server.Close()
@@ -227,7 +227,7 @@ func TestAirtimeService_StatusWithError(t *testing.T) {
 	assert.Equal(t, "412: bad password", transaction.Message)
 	assert.Equal(t, http.StatusInternalServerError, transaction.Code)
 	assert.Nil(t, transaction.Result)
-	assert.False(t, transaction.IsSuccessfull())
+	assert.False(t, transaction.IsSuccessful())
 
 	// Teardown
 	server.Close()
