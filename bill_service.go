@@ -63,6 +63,34 @@ func (service *billService) Status(ctx context.Context, transactionID string) (*
 	return status, response, nil
 }
 
+// Amount is used to get the amount of a specific bill
+//
+// API Docs: https://developer.afrikpay.com/documentation/bill/getamount/
+func (service *billService) Amount(ctx context.Context, biller Biller, billID string) (*map[string]interface{}, *Response, error) {
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/bill/getamount/", map[string]string{
+		"biller":        biller.string(),
+		"billid":        billID,
+		"agentid":       service.client.agentID,
+		"agentplatform": service.client.agentPlatform,
+		"hash":          service.client.hash(biller.string(), billID, service.client.apiKey),
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	response, err := service.client.do(request)
+	if err != nil {
+		return nil, response, err
+	}
+
+	status := new(map[string]interface{})
+	if err = json.Unmarshal(*response.Body, status); err != nil {
+		return nil, response, err
+	}
+
+	return status, response, nil
+}
+
 func (service *billService) billPayParamsToPayload(params BillPayParams) map[string]string {
 	payload := map[string]string{
 		"biller":        params.Biller.string(),

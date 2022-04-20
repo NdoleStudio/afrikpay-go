@@ -14,8 +14,7 @@ const (
 	BillerCamwater = Biller("camwater")
 	// BillerCanal is used for postpaid bills of canal+ subscriptions
 	BillerCanal = Biller("canal")
-
-	// BillerUDS is used for postpaid bills of UDS
+	// BillerUDS is used for postpaid bills of the University of Dschang
 	BillerUDS = Biller("uds")
 )
 

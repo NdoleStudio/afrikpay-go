@@ -29,10 +29,14 @@ import "github.com/NdoleStudio/afrikpay-go"
 ## Implemented
 
 - [Airtime](#airtime)
-    - `POST /api/airtime/v2/`: Transfer airtime
-    - `POST /api/airtime/status/v2/`: Airtime Status
+  - `POST /api/airtime/v2/`: Transfer airtime
+  - `POST /api/airtime/status/v2/`: Airtime status
 - [Account](#account)
   - `POST /api/account/agent/balance/v2/`: Account Balance
+- [Bill](#bill)
+  - `POST /api/bill/v2/`: Pay bills or subscriptions
+  - `POST /api/bill/status/v2/`: Bill transaction status
+  - `POST /api/bill/getamount/`: Get bill amount
 
 ## Usage
 
@@ -118,6 +122,51 @@ if err != nil {
 }
 
 log.Println(status.Code) // 200
+```
+
+### Bill
+
+#### `POST /api/bill/v2/`: Pay bills or subscriptions
+
+The Bill API is intended for bill payment operations.
+
+```go
+transaction, _, err := client.Bill.Pay(context.Background(), BillPayParams{
+    Biller:           BillerEneoPostpay,
+    BillID:           billerID,
+    Mode:             ModeCash
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Println(transaction.Code) // 200
+```
+
+#### `POST /api/bill/status/v2/`: Bill transaction status
+
+The Bill Status API is intended for getting the status of a bill transaction
+
+```go
+transaction, _ , err := client.Bill.Status(context.Background(), "transaction-id")
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Println(transaction.Code) //200
+```
+
+#### `POST /api/bill/getamount/`: Get bill amount
+
+The Bill Amount API is used to get the amount of a specific bill
+
+```go
+amount, _ , err := client.Bill.Amount(context.Background(), afrikpay.BillerEneoPostpay, "contract-number")
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Println(transaction.Code) //200
 ```
 
 
