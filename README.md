@@ -161,7 +161,7 @@ log.Println(transaction.Code) //200
 The Bill Amount API is used to get the amount of a specific bill
 
 ```go
-amount, _ , err := client.Bill.Amount(context.Background(), afrikpay.BillerEneoPostpay, "contract-number")
+amount, _ , err := client.Bill.Amount(context.Background(), afrikpay.BillerEneoPostpay, "bill-number")
 if err != nil {
     log.Fatal(err)
 }
