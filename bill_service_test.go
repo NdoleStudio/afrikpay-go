@@ -85,7 +85,7 @@ func TestBillService_Pay(t *testing.T) {
 	// Assert
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
-	assert.Equal(t, &BillResponse{
+	assert.Equal(t, &BillPayResponse{
 		Code:    200,
 		Message: "success",
 		Result: &BillTransaction{
@@ -187,7 +187,7 @@ func TestBillService_Status(t *testing.T) {
 	// Assert
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
-	assert.Equal(t, &BillResponse{
+	assert.Equal(t, &BillPayResponse{
 		Code:    200,
 		Message: "success",
 		Result: &BillTransaction{
@@ -217,6 +217,104 @@ func TestBillService_Status_WithError(t *testing.T) {
 
 	// Act
 	transaction, _, err := client.Airtime.Status(context.Background(), transactionID)
+
+	// Assert
+	assert.NoError(t, err)
+	assert.Nil(t, transaction.Result)
+
+	assert.Equal(t, "General Failure", transaction.Message)
+	assert.Equal(t, http.StatusInternalServerError, transaction.Code)
+	assert.Nil(t, transaction.Result)
+	assert.False(t, transaction.IsSuccessful())
+
+	// Teardown
+	server.Close()
+}
+
+func TestBillService_Amount_Request(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	requests := make([]*http.Request, 0)
+	apiKey := "api-key"
+	agentID := "agent-id"
+	agentPlatform := "agent-platform"
+	billID := "618442737"
+	server := helpers.MakeRequestCapturingTestServer(http.StatusOK, [][]byte{stubs.BillAmount()}, &requests)
+	client := New(
+		WithBaseURL(server.URL),
+		WithAgentID(agentID),
+		WithAPIKey(apiKey),
+		WithAgentPlatform(agentPlatform),
+	)
+
+	expectedRequest := map[string]interface{}{
+		"biller":        BillerEneoPostpay.string(),
+		"billid":        billID,
+		"agentid":       agentID,
+		"agentplatform": agentPlatform,
+		"hash":          fmt.Sprintf("%x", md5.Sum([]byte(BillerEneoPostpay.string()+billID+apiKey))),
+	}
+
+	// Act
+	_, _, err := client.Bill.Amount(context.Background(), BillerEneoPostpay, billID)
+	assert.NoError(t, err)
+
+	assert.Equal(t, 1, len(requests))
+	buf, err := ioutil.ReadAll(requests[0].Body)
+	assert.NoError(t, err)
+
+	requestBody := map[string]interface{}{}
+	err = json.Unmarshal(buf, &requestBody)
+	assert.NoError(t, err)
+
+	// Assert
+	assert.Equal(t, expectedRequest, requestBody)
+
+	// Teardown
+	server.Close()
+}
+
+func TestBillService_Amount(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	server := helpers.MakeTestServer(http.StatusOK, stubs.BillAmount())
+	client := New(WithBaseURL(server.URL))
+	billID := "618442737"
+	amount := 1100
+
+	// Act
+	transaction, response, err := client.Bill.Amount(context.Background(), BillerEneoPostpay, billID)
+
+	// Assert
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
+	assert.Equal(t, &BillAmountResponse{
+		Code:    200,
+		Message: "success",
+		Result:  &amount,
+	}, transaction)
+
+	assert.True(t, transaction.IsSuccessful())
+
+	// Teardown
+	server.Close()
+}
+
+func TestBillService_Amount_WithError(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	server := helpers.MakeTestServer(http.StatusOK, stubs.BillPayWithError())
+	client := New(WithBaseURL(server.URL))
+	billID := "618442737"
+
+	// Act
+	transaction, _, err := client.Bill.Amount(context.Background(), BillerEneoPostpay, billID)
 
 	// Assert
 	assert.NoError(t, err)

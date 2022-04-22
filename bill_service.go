@@ -12,7 +12,7 @@ type billService service
 // Pay Bills or Subscriptions
 //
 // API Docs: https://developer.afrikpay.com/documentation/bill/v2/
-func (service *billService) Pay(ctx context.Context, params BillPayParams) (*BillResponse, *Response, error) {
+func (service *billService) Pay(ctx context.Context, params BillPayParams) (*BillPayResponse, *Response, error) {
 	request, err := service.client.newRequest(
 		ctx,
 		http.MethodPost,
@@ -28,7 +28,7 @@ func (service *billService) Pay(ctx context.Context, params BillPayParams) (*Bil
 		return nil, response, err
 	}
 
-	status := new(BillResponse)
+	status := new(BillPayResponse)
 	if err = json.Unmarshal(*response.Body, status); err != nil {
 		return nil, response, err
 	}
@@ -39,7 +39,7 @@ func (service *billService) Pay(ctx context.Context, params BillPayParams) (*Bil
 // Status is intended for getting the status of an airtime transaction
 //
 // API Docs: https://developer.afrikpay.com/documentation/airtime/status/v2/
-func (service *billService) Status(ctx context.Context, transactionID string) (*BillResponse, *Response, error) {
+func (service *billService) Status(ctx context.Context, transactionID string) (*BillPayResponse, *Response, error) {
 	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/bill/status/v2/", map[string]string{
 		"processingnumber": transactionID,
 		"agentid":          service.client.agentID,
@@ -55,7 +55,7 @@ func (service *billService) Status(ctx context.Context, transactionID string) (*
 		return nil, response, err
 	}
 
-	status := new(BillResponse)
+	status := new(BillPayResponse)
 	if err = json.Unmarshal(*response.Body, status); err != nil {
 		return nil, response, err
 	}
@@ -66,7 +66,7 @@ func (service *billService) Status(ctx context.Context, transactionID string) (*
 // Amount is used to get the amount of a specific bill
 //
 // API Docs: https://developer.afrikpay.com/documentation/bill/getamount/
-func (service *billService) Amount(ctx context.Context, biller Biller, billID string) (*map[string]interface{}, *Response, error) {
+func (service *billService) Amount(ctx context.Context, biller Biller, billID string) (*BillAmountResponse, *Response, error) {
 	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/bill/getamount/", map[string]string{
 		"biller":        biller.string(),
 		"billid":        billID,
@@ -83,7 +83,7 @@ func (service *billService) Amount(ctx context.Context, biller Biller, billID st
 		return nil, response, err
 	}
 
-	status := new(map[string]interface{})
+	status := new(BillAmountResponse)
 	if err = json.Unmarshal(*response.Body, status); err != nil {
 		return nil, response, err
 	}

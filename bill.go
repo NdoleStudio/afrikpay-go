@@ -60,8 +60,8 @@ type BillPayParams struct {
 	ProcessingNumber *string
 }
 
-// BillResponse is returned from bill api requests
-type BillResponse struct {
+// BillPayResponse is returned from bill api requests
+type BillPayResponse struct {
 	Code    int              `json:"code"`
 	Message string           `json:"message"`
 	Result  *BillTransaction `json:"result,omitempty"`
@@ -78,6 +78,18 @@ type BillTransaction struct {
 }
 
 // IsSuccessful determines if the transaction was successful
-func (response BillResponse) IsSuccessful() bool {
+func (response BillPayResponse) IsSuccessful() bool {
 	return response.Code == http.StatusOK
+}
+
+// BillAmountResponse is returned from bill api requests
+type BillAmountResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Result  *int   `json:"result,omitempty"`
+}
+
+// IsSuccessful determines if the transaction was successful
+func (response BillAmountResponse) IsSuccessful() bool {
+	return response.Code == http.StatusOK && response.Result != nil && *response.Result > 1000
 }

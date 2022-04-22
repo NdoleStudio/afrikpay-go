@@ -28,3 +28,14 @@ func BillPayWithError() []byte {
 		}
 `)
 }
+
+// BillAmount is a dummy json response for the `/api/bill/getamount/` endpoint
+func BillAmount() []byte {
+	return []byte(`
+		{
+		   "code":200,
+		   "message":"success",
+		   "result": 1100
+		}
+`)
+}
