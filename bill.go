@@ -60,7 +60,7 @@ type BillPayParams struct {
 	ProcessingNumber *string
 }
 
-// BillPayResponse is returned from bill api requests
+// BillPayResponse is returned from bill pay/status api requests
 type BillPayResponse struct {
 	Code    int              `json:"code"`
 	Message string           `json:"message"`
@@ -82,7 +82,7 @@ func (response BillPayResponse) IsSuccessful() bool {
 	return response.Code == http.StatusOK
 }
 
-// BillAmountResponse is returned from bill api requests
+// BillAmountResponse is returned from bill amount api requests
 type BillAmountResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
