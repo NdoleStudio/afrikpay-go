@@ -69,7 +69,7 @@ type BillPayResponse struct {
 
 // BillTransaction is the details for a bill payment transaction
 type BillTransaction struct {
-	OperatorID       string      `json:"operatorid"`
+	OperatorID       *string     `json:"operatorid"`
 	TransactionID    string      `json:"txnid"`
 	Status           string      `json:"status"`
 	Date             string      `json:"date"`
@@ -79,7 +79,7 @@ type BillTransaction struct {
 
 // IsSuccessful determines if the transaction was successful
 func (response BillPayResponse) IsSuccessful() bool {
-	return response.Code == http.StatusOK
+	return response.Code == http.StatusOK && response.Result != nil && response.Result.OperatorID != nil
 }
 
 // BillAmountResponse is returned from bill amount api requests

@@ -89,7 +89,7 @@ func TestBillService_Pay(t *testing.T) {
 		Code:    200,
 		Message: "success",
 		Result: &BillTransaction{
-			OperatorID:       "xxxx-xxxx-xxxx-xxxx-5286 : 0000000000068 : 8.8 Kwh",
+			OperatorID:       StringToPointer("xxxx-xxxx-xxxx-xxxx-5286 : 0000000000068 : 8.8 Kwh"),
 			TransactionID:    "5xxxx",
 			Status:           "PENDING",
 			Date:             "2022-04-19 18:00:06",
@@ -191,7 +191,7 @@ func TestBillService_Status(t *testing.T) {
 		Code:    200,
 		Message: "success",
 		Result: &BillTransaction{
-			OperatorID:       "xxxx-xxxx-xxxx-xxxx-5286 : 0000000000068 : 8.8 Kwh",
+			OperatorID:       StringToPointer("xxxx-xxxx-xxxx-xxxx-5286 : 0000000000068 : 8.8 Kwh"),
 			TransactionID:    "5xxxx",
 			Status:           "PENDING",
 			Date:             "2022-04-19 18:00:06",
