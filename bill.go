@@ -10,11 +10,11 @@ const (
 	BillerEneoPostpay = Biller("eneopostpay")
 	// BillerEneoPrepay is used for postpaid bills of ENEO
 	BillerEneoPrepay = Biller("eneoprepay")
-	// BillerCamwater is used for postpaid bills of Cameroon Water Utilities Corporation
+	// BillerCamwater is used for postpaid bills of Cameroon Water Corporation
 	BillerCamwater = Biller("camwater")
-	// BillerCanal is used for postpaid bills of canal+ subscriptions
+	// BillerCanal is used for canal+ subscriptions
 	BillerCanal = Biller("canal")
-	// BillerUDS is used for postpaid bills of the University of Dschang
+	// BillerUDS is used for bills of the University of Dschang
 	BillerUDS = Biller("uds")
 )
 
