@@ -1,6 +1,10 @@
 package afrikpay
 
-import "net/http"
+import (
+	"errors"
+	"net/http"
+	"time"
+)
 
 // Biller is the type of bill we want to pay
 type Biller string
@@ -75,6 +79,25 @@ type BillTransaction struct {
 	Date             string      `json:"date"`
 	ReferenceID      interface{} `json:"referenceid"`
 	ProcessingNumber string      `json:"processingnumber"`
+}
+
+// GetDate returns the date as time.Time
+func (transaction *BillTransaction) GetDate() (time.Time, error) {
+	if transaction == nil {
+		return time.Time{}, errors.New("the transaction is nil")
+	}
+
+	loc, err := time.LoadLocation("Africa/Douala")
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return time.ParseInLocation("2006-01-02 15:04:05", transaction.Date, loc)
+}
+
+// IsPending determines if the transaction is pending
+func (response BillPayResponse) IsPending() bool {
+	return response.Code == http.StatusOK && response.Result != nil && response.Result.OperatorID == nil && response.Result.Status == "PENDING"
 }
 
 // IsSuccessful determines if the transaction was successful

@@ -18,6 +18,24 @@ func BillPay() []byte {
 `)
 }
 
+// BillPayPending is a dummy json response for the `/api/bill/v2/` endpoint
+func BillPayPending() []byte {
+	return []byte(`
+		{
+		   "code":200,
+		   "message":"success",
+		   "result":{
+			  "operatorid":null,
+			  "txnid":"63854",
+			  "status":"PENDING",
+			  "date":"2022-06-11 14:37:31",
+			  "referenceid":null,
+			  "processingnumber":"123456"
+		   }
+		}
+`)
+}
+
 // BillPayWithError is a dummy json response for the `/api/airtime/v2/` endpoint with an error
 func BillPayWithError() []byte {
 	return []byte(`
