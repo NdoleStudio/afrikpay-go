@@ -16,3 +16,4 @@
 $path
 .idea
 *e2e_test.go
+cmd

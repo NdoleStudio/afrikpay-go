@@ -13,7 +13,7 @@ type airtimeService service
 //
 // API Docs: https://developer.afrikpay.com/documentation/airtime/v2/
 func (service *airtimeService) Transfer(ctx context.Context, params AirtimeTransferParams) (*AirtimeResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/v2/", map[string]string{
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/v1/", map[string]string{
 		"operator":      params.Operator,
 		"reference":     params.PhoneNumber,
 		"amount":        params.Amount,
@@ -45,7 +45,7 @@ func (service *airtimeService) Transfer(ctx context.Context, params AirtimeTrans
 //
 // API Docs: https://developer.afrikpay.com/documentation/airtime/status/v2/
 func (service *airtimeService) Status(ctx context.Context, transactionID string) (*AirtimeResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/status/v2/", map[string]string{
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/status/v1/", map[string]string{
 		"processingnumber": transactionID,
 		"agentid":          service.client.agentID,
 		"agentplatform":    service.client.agentPlatform,
