@@ -45,7 +45,7 @@ func (service *airtimeService) Transfer(ctx context.Context, params AirtimeTrans
 //
 // API Docs: https://developer.afrikpay.com/documentation/airtime/status/v2/
 func (service *airtimeService) Status(ctx context.Context, transactionID string) (*AirtimeResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/status/v1/", map[string]string{
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/api/airtime/status/v2/", map[string]string{
 		"processingnumber": transactionID,
 		"agentid":          service.client.agentID,
 		"agentplatform":    service.client.agentPlatform,
