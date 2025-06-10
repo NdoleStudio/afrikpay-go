@@ -3,14 +3,12 @@ package afrikpay
 import (
 	"bytes"
 	"context"
-	"crypto/md5"
-	"encoding/hex"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 type service struct {
@@ -18,19 +16,16 @@ type service struct {
 }
 
 // Client is the afrikpay API client.
-// Do not instantiate this client with Client{}. Use the New method instead.
+// Exec not instantiate this client with Client{}. Use the New method instead.
 type Client struct {
-	httpClient    *http.Client
-	common        service
-	baseURL       string
-	apiKey        string
-	agentID       string
-	agentPlatform string
-	agentPassword string
+	httpClient          *http.Client
+	common              service
+	baseURL             string
+	apiKey              string
+	authorizationHeader string
+	walletPin           string
 
-	Airtime *airtimeService
-	Account *accountService
-	Bill    *billService
+	ENEOPrepaid *eneoPrepaidService
 }
 
 // New creates and returns a new *Client from a slice of Option.
@@ -42,27 +37,28 @@ func New(options ...Option) *Client {
 	}
 
 	client := &Client{
-		httpClient:    config.httpClient,
-		baseURL:       config.baseURL,
-		apiKey:        config.apiKey,
-		agentID:       config.agentID,
-		agentPlatform: config.agentPlatform,
-		agentPassword: config.agentPassword,
+		httpClient:          config.httpClient,
+		baseURL:             config.baseURL,
+		apiKey:              config.apiKey,
+		authorizationHeader: base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", config.walletUsername, config.walletPassword))),
+		walletPin:           config.walletPin,
 	}
 
 	client.common.client = client
-
-	client.Airtime = (*airtimeService)(&client.common)
-	client.Account = (*accountService)(&client.common)
-	client.Bill = (*billService)(&client.common)
+	client.ENEOPrepaid = &eneoPrepaidService{
+		paymentService: &paymentService[ENEOPrepaidPaymentRequest, ENEOPrepaidPaymentResponse]{
+			service: &client.common,
+			slug:    "eneo-prepaid-bill-service-feature",
+		},
+	}
 
 	return client
 }
 
-// newRequest creates an API request. A relative URL can be provided in uri,
-// in which case it is resolved relative to the BaseURL of the Client.
-// URI's should always be specified without a preceding slash.
-func (client *Client) newRequest(ctx context.Context, method, uri string, body interface{}) (*http.Request, error) {
+// newRequest creates an API request.
+// A relative URL must be provided in uri in which case it is resolved relative to the BaseURL of the Client.
+// URI's should always be specified with a preceding slash.
+func (client *Client) newRequest(ctx context.Context, method, uri string, body any) (*http.Request, error) {
 	var buf io.ReadWriter
 	if body != nil {
 		buf = &bytes.Buffer{}
@@ -81,17 +77,15 @@ func (client *Client) newRequest(ctx context.Context, method, uri string, body i
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("ApiKey", client.apiKey)
+	req.Header.Set("X-Authorization", client.authorizationHeader)
 
 	return req, nil
 }
 
 // do carries out an HTTP request and returns a Response
-func (client *Client) do(req *http.Request) (*Response, error) {
-	if req == nil {
-		return nil, fmt.Errorf("%T cannot be nil", req)
-	}
-
-	httpResponse, err := client.httpClient.Do(req)
+func (client *Client) do(request *http.Request) (*Response, error) {
+	httpResponse, err := client.httpClient.Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -103,18 +97,12 @@ func (client *Client) do(req *http.Request) (*Response, error) {
 		return resp, err
 	}
 
-	_, err = io.Copy(ioutil.Discard, httpResponse.Body)
+	_, err = io.Copy(io.Discard, httpResponse.Body)
 	if err != nil {
 		return resp, err
 	}
 
 	return resp, nil
-}
-
-// hash does md5 hash of parameters
-func (client *Client) hash(params ...string) string {
-	sum := md5.Sum([]byte(strings.Join(params, "")))
-	return hex.EncodeToString(sum[:])
 }
 
 // newResponse converts an *http.Response to *Response

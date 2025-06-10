@@ -35,30 +35,30 @@ func WithBaseURL(baseURL string) Option {
 	})
 }
 
-// WithAPIKey sets the API Key
+// WithAPIKey sets the AfrikPay API Key
 func WithAPIKey(apiKey string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
 		config.apiKey = apiKey
 	})
 }
 
-// WithAgentID sets the Agent ID for api calls
-func WithAgentID(agentID string) Option {
+// WithWalletUsername sets the AfrikPay wallet username
+func WithWalletUsername(walletUsername string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
-		config.agentID = agentID
+		config.walletUsername = walletUsername
 	})
 }
 
-// WithAgentPlatform sets the agent platform
-func WithAgentPlatform(agentPlatform string) Option {
+// WithWalletPassword sets the AfrikPay wallet password
+func WithWalletPassword(walletPassword string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
-		config.agentPlatform = agentPlatform
+		config.walletPassword = walletPassword
 	})
 }
 
-// WithAgentPassword sets the agent password
-func WithAgentPassword(agentPassword string) Option {
+// WithWalletPin sets the AfrikPay wallet pin
+func WithWalletPin(walletPin string) Option {
 	return clientOptionFunc(func(config *clientConfig) {
-		config.agentPassword = agentPassword
+		config.walletPin = walletPin
 	})
 }

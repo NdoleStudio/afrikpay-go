@@ -9,7 +9,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/NdoleStudio/afrikpay-go)](https://pkg.go.dev/github.com/NdoleStudio/afrikpay-go)
 
 
-This package provides a Go client for the AfrikPay HTTP API https://developer.afrikpay.com
+This package provides a Go client for the AfrikPay HTTP API https://developers.afrikpay.com/
 
 ## Installation
 
@@ -28,15 +28,12 @@ import "github.com/NdoleStudio/afrikpay-go"
 
 ## Implemented
 
-- [Airtime](#airtime)
-  - `POST /api/airtime/v2/`: Transfer airtime
-  - `POST /api/airtime/status/v2/`: Airtime status
-- [Account](#account)
-  - `POST /api/account/agent/balance/v2/`: Account Balance
-- [Bill](#bill)
-  - `POST /api/bill/v2/`: Pay bills or subscriptions
-  - `POST /api/bill/status/v2/`: Bill transaction status
-  - `POST /api/bill/getamount/`: Get bill amount
+- **Balance**:
+  - `POST /api/oss/balance/partner/v1`: Returns deposit and commission balance of the user
+- **Payment**:
+  - `POST /api/oss/payment/partner/v1`: Make a payment (airtime, bill, taxes, school)
+- **Transaction Status**:
+  - `POST /api/oss/transaction/status/partner/v1`: Get status of specific transaction
 
 ## Usage
 
@@ -53,10 +50,10 @@ import (
 
 func main()  {
   client := afrikpay.New(
-    afrikpay.WithAgentID(""/* agent id */),
     afrikpay.WithAPIKey(""/* api key */),
-    afrikpay.WithAgentPassword(""/* agent password */),
-    afrikpay.WithAgentPlatform(""/* agent platform */),
+    afrikpay.WithWalletUsername(""/* wallet username */),
+    afrikpay.WithWalletPassword(""/* wallet username */),
+    afrikpay.WithWalletPin(""/* wallet pin */),
   )
 }
 ```
@@ -66,109 +63,11 @@ func main()  {
 All API calls return an `error` as the last return object. All successful calls will return a `nil` error.
 
 ```go
-status, response, err := afrikpay.Airtime.Transfer(context.Background())
+balance, response, err := client.Balance(context.Background())
 if err != nil {
-    //handle error
+    // handle error
 }
 ```
-
-### Airtime
-
-#### `POST /api/airtime/v2/`: Transfer airtime
-
-Transfer is intended for communication / Internet credit transfer operations to telephone numbers.
-
-```go
-transaction, _, err := afrikpay.Airtime.Transfer(context.Background(), &AirtimeTransferParams{
-    Operator:          "mtn",
-    PurchaseReference: "test-ref",
-    Amount:            "987",
-    PhoneNumber:       "00000000",
-    Mode:              "cash",
-})
-
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(status.Code) // 200
-```
-
-#### `POST /api/airtime/status/v2/`: Airtime Status
-
-The Airtime Status API is intended for getting the status of a airtime transaction
-
-```go
-transaction, _, err := afrikpay.Airtime.Status(context.Background(), ""/* Transaction ID */)
-
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(status.Code) // 200
-```
-
-
-### Account
-
-#### `POST /api/account/agent/balance/v2/`: Account Balance
-
-The Balance API is used for the partner to get the Balance of their account
-
-```go
-balance, _, err := afrikpay.Account.Balance(context.Background())
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(status.Code) // 200
-```
-
-### Bill
-
-#### `POST /api/bill/v2/`: Pay bills or subscriptions
-
-The Bill API is intended for bill payment operations.
-
-```go
-transaction, _, err := client.Bill.Pay(context.Background(), BillPayParams{
-    Biller:           BillerEneoPostpay,
-    BillID:           billerID,
-    Mode:             ModeCash
-})
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(transaction.Code) // 200
-```
-
-#### `POST /api/bill/status/v2/`: Bill transaction status
-
-The Bill Status API is intended for getting the status of a bill transaction
-
-```go
-transaction, _ , err := client.Bill.Status(context.Background(), "transaction-id")
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(transaction.Code) //200
-```
-
-#### `POST /api/bill/getamount/`: Get bill amount
-
-The Bill Amount API is used to get the amount of a specific bill
-
-```go
-amount, _ , err := client.Bill.Amount(context.Background(), afrikpay.BillerEneoPostpay, "bill-number")
-if err != nil {
-    log.Fatal(err)
-}
-
-log.Println(transaction.Code) //200
-```
-
 
 ## Testing
 
