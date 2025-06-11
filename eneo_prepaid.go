@@ -1,5 +1,10 @@
 package afrikpay
 
+type eneoPrepaidService struct {
+	*paymentService[ENEOPrepaidPaymentRequest, ENEOPrepaidPaymentResponse]
+	*transactionStatusService[ENEOPrepaidPaymentResponse]
+}
+
 // ENEOPrepaidPaymentRequest is used to create a prepaid payment request for ENEO
 type ENEOPrepaidPaymentRequest struct {
 	ReferenceNumber string `json:"referenceNumber"`
@@ -7,7 +12,7 @@ type ENEOPrepaidPaymentRequest struct {
 	Phone           string `json:"phone"`
 	Email           string `json:"email"`
 	ExternalID      string `json:"externalId"`
-	Description     string `json:"description"`
+	Description     string `json:"description,omitempty"`
 }
 
 // ENEOPrepaidPaymentResponse is the response from Afrikpay when creating a prepaid payment request for ENEO
@@ -105,9 +110,4 @@ type ENEOPrepaidPaymentResponse struct {
 		DeclineURL            string `json:"declineUrl"`
 		CancelURL             string `json:"cancelUrl"`
 	} `json:"result"`
-}
-
-type eneoPrepaidService struct {
-	*paymentService[ENEOPrepaidPaymentRequest, ENEOPrepaidPaymentResponse]
-	*transactionStatusService[ENEOPrepaidPaymentRequest, ENEOPrepaidPaymentResponse]
 }

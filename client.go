@@ -49,6 +49,10 @@ func New(options ...Option) *Client {
 			service: &client.common,
 			slug:    "eneo-prepaid-bill-service-feature",
 		},
+		transactionStatusService: &transactionStatusService[ENEOPrepaidPaymentResponse]{
+			service: &client.common,
+			slug:    "eneo-prepaid-bill-service-feature",
+		},
 	}
 
 	return client
