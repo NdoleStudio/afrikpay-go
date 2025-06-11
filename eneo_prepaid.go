@@ -32,11 +32,11 @@ type ENEOPrepaidPaymentResponse struct {
 			AccNumber          string `json:"accNumber"`
 			Token              string `json:"token"`
 			DateTime           string `json:"dateTime"`
-			AmountDebt         string `json:"amountDebt"`
-			BalanceDebt        string `json:"balanceDebt"`
-			ReceiptNo          int    `json:"receiptNo"`
-			LessRound          string `json:"lessRound"`
-			AmountTender       string `json:"amountTender"`
+			AmountDebt         int    `json:"amountDebt"`
+			BalanceDebt        int    `json:"balanceDebt"`
+			ReceiptNo          any    `json:"receiptNo"`
+			LessRound          any    `json:"lessRound"`
+			AmountTender       any    `json:"amountTender"`
 			StatusDateTime     any    `json:"statusDateTime"`
 			StatusUniqueNumber any    `json:"statusUniqueNumber"`
 			Value              string `json:"value"`
@@ -70,34 +70,34 @@ type ENEOPrepaidPaymentResponse struct {
 		TerminalName        string   `json:"terminalName"`
 		TerminalUserAgent   string   `json:"terminalUserAgent"`
 		Reference           struct {
-			ErrorCode       any      `json:"errorCode"`
-			ErrorMessage    any      `json:"errorMessage"`
-			ErrorType       any      `json:"errorType"`
-			Status          string   `json:"status"`
-			CallbackURL     any      `json:"callbackUrl"`
-			Voucher         struct{} `json:"voucher"`
-			ReferenceID     string   `json:"referenceId"`
-			ReferenceNumber string   `json:"referenceNumber"`
-			Amount          int      `json:"amount"`
-			Name            string   `json:"name"`
-			GenerationDate  any      `json:"generationDate"`
-			ExpirationDate  any      `json:"expirationDate"`
-			Date            string   `json:"date"`
-			ProviderCode    string   `json:"providerCode"`
-			ProviderMessage any      `json:"providerMessage"`
-			Options         any      `json:"options"`
-			ProviderStatus  any      `json:"providerStatus"`
-			Adress          string   `json:"adress"`
-			Contact         string   `json:"contact"`
-			Reflocal        string   `json:"reflocal"`
-			AccNo           string   `json:"accNo"`
-			Ti              string   `json:"ti"`
-			Krn             string   `json:"krn"`
-			Sgc             string   `json:"sgc"`
-			At              int      `json:"at"`
-			Tt              int      `json:"tt"`
-			DateTime        string   `json:"dateTime"`
-			Token           string   `json:"token"`
+			ErrorCode       any    `json:"errorCode"`
+			ErrorMessage    any    `json:"errorMessage"`
+			ErrorType       any    `json:"errorType"`
+			Status          string `json:"status"`
+			CallbackURL     any    `json:"callbackUrl"`
+			Voucher         any    `json:"voucher"`
+			ReferenceID     any    `json:"referenceId"`
+			ReferenceNumber string `json:"referenceNumber"`
+			Amount          int    `json:"amount"`
+			Name            string `json:"name"`
+			GenerationDate  any    `json:"generationDate"`
+			ExpirationDate  any    `json:"expirationDate"`
+			Date            string `json:"date"`
+			ProviderCode    any    `json:"providerCode"`
+			ProviderMessage any    `json:"providerMessage"`
+			Options         any    `json:"options"`
+			ProviderStatus  any    `json:"providerStatus"`
+			Adress          string `json:"adress"`
+			Contact         string `json:"contact"`
+			Reflocal        string `json:"reflocal"`
+			AccNo           string `json:"accNo"`
+			Ti              string `json:"ti"`
+			Krn             string `json:"krn"`
+			Sgc             string `json:"sgc"`
+			At              string `json:"at"`
+			Tt              string `json:"tt"`
+			DateTime        string `json:"dateTime"`
+			Token           string `json:"token"`
 		} `json:"reference"`
 		IPAddress             string `json:"ipAddress"`
 		Date                  string `json:"date"`
