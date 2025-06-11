@@ -29,7 +29,7 @@ func (payment *paymentService[T, V]) Payment(ctx context.Context, payload *T) (*
 	}
 
 	result := new(V)
-	if err = json.Unmarshal(*response.Body, request); err != nil {
+	if err = json.Unmarshal(*response.Body, result); err != nil {
 		return nil, response, err
 	}
 

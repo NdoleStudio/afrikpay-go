@@ -28,7 +28,7 @@ func (service *transactionStatusService[T]) TransactionStatus(ctx context.Contex
 	}
 
 	result := new(T)
-	if err = json.Unmarshal(*response.Body, request); err != nil {
+	if err = json.Unmarshal(*response.Body, result); err != nil {
 		return nil, response, err
 	}
 
