@@ -6,16 +6,16 @@ import (
 	"net/http"
 )
 
-type paymentService[T, V any] struct {
+type cashinService[T, V any] struct {
 	*service
 	slug string
 }
 
-// Pay carries out a transaction (airtime, bill, taxes, school, ENEO)
+// MakeDeposit on wallet
 //
-// https://developers.afrikpay.com/devportal/apis/5ef8e2f6-0765-43fa-b6d2-ddd34de7ef1a/documents/default
-func (payment *paymentService[T, V]) Pay(ctx context.Context, payload *T) (*V, *Response, error) {
-	request, err := payment.client.newRequest(ctx, http.MethodPost, "/api/oss/payment/partner/v1", payload)
+// https://developers.afrikpay.com/devportal/apis/cdb09c3d-5128-4fa7-bf09-4d0fd1cf2948/documents/default
+func (payment *cashinService[T, V]) MakeDeposit(ctx context.Context, payload *T) (*V, *Response, error) {
+	request, err := payment.client.newRequest(ctx, http.MethodPost, "/api/oss/cashin/partner/v1", payload)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -15,10 +15,10 @@ type BalanceResponse struct {
 
 // BalanceResponseResult contains the result of the balance response
 type BalanceResponseResult struct {
-	AccountDepositNumber     string `json:"accountDepositNumber"`
-	AccountCommissionNumber  string `json:"accountCommissionNumber"`
-	AccountDepositBalance    int    `json:"accountDepositBalance"`
-	AccountCommissionBalance int    `json:"accountCommissionBalance"`
+	AccountDepositNumber     string  `json:"accountDepositNumber"`
+	AccountCommissionNumber  string  `json:"accountCommissionNumber"`
+	AccountDepositBalance    float64 `json:"accountDepositBalance"`
+	AccountCommissionBalance float64 `json:"accountCommissionBalance"`
 }
 
 // Balance lists all visible accounts of the given user, and for each account show the current deposit balance, and current commission.

@@ -19,11 +19,20 @@ type ENEOPrepaidPaymentRequest struct {
 type ENEOPrepaidPaymentResponse struct {
 	Code    int                               `json:"code"`
 	Message string                            `json:"message"`
-	Result  *ENEOPRepaidPaymentResponseResult `json:"result"`
+	Result  *eneoPrepaidPaymentResponseResult `json:"result"`
 }
 
-// ENEOPRepaidPaymentResponseResult contains the details of the prepaid payment response for ENEO
-type ENEOPRepaidPaymentResponseResult struct {
+// IsFailed checks if the Orange Money Cashin payment response indicates a failure
+func (response *ENEOPrepaidPaymentResponse) IsFailed() bool {
+	return response.Code != 200 || (response.Result != nil && response.Result.Status == "FAILED")
+}
+
+// IsInProgress checks if the Orange Money Cashin payment is still in progress
+func (response *ENEOPrepaidPaymentResponse) IsInProgress() bool {
+	return response.Code == 200 && response.Result != nil && (response.Result.Status == "PROGRESS" || response.Result.Status == "PENDING" || response.Result.Status == "ACCEPTED" || response.Result.Status == "PAYED")
+}
+
+type eneoPrepaidPaymentResponseResult struct {
 	ErrorCode    any    `json:"errorCode"`
 	ErrorMessage any    `json:"errorMessage"`
 	ErrorType    any    `json:"errorType"`

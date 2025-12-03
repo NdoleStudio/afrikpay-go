@@ -1,18 +1,22 @@
 package afrikpay
 
-// TransactionStatusRequest is used to request the status of a transaction
-type TransactionStatusRequest struct {
-	ReferenceNumber string `json:"referenceNumber,omitempty"`
-	Amount          int    `json:"amount,omitempty"`
-	ExternalID      string `json:"externalId,omitempty"`
-	RequestID       string `json:"requestId,omitempty"`
-	TransactionID   int    `json:"transactionId,omitempty"`
-	FinancialID     string `json:"financialId,omitempty"`
-	ProviderID      string `json:"providerId,omitempty"`
+type orangeMoneyCashinService struct {
+	*cashinService[OrangeMoneyCashinPaymentRequest, OrangeMoneyCashinPaymentResponse]
+	*transactionStatusService[OrangeMoneyCashinPaymentResponse]
 }
 
-// TransactionStatusResponse is the response from Afrikpay for a transaction status
-type TransactionStatusResponse struct {
+// OrangeMoneyCashinPaymentRequest Cashin via Orange Money
+type OrangeMoneyCashinPaymentRequest struct {
+	ReferenceNumber string `json:"referenceNumber"`
+	Amount          int    `json:"amount"`
+	Phone           string `json:"phone"`
+	Email           string `json:"email"`
+	ExternalID      string `json:"externalId"`
+	Description     string `json:"description"`
+}
+
+// OrangeMoneyCashinPaymentResponse is the response from Afrikpay when creating a cashin payment request via Orange Money
+type OrangeMoneyCashinPaymentResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Result  *struct {
@@ -22,7 +26,9 @@ type TransactionStatusResponse struct {
 		Status       string `json:"status"`
 		CallbackURL  string `json:"callbackUrl"`
 		Voucher      struct {
-			Value string `json:"value"`
+			PayToken     string `json:"payToken"`
+			ProviderTime string `json:"providerTime"`
+			Value        string `json:"value"`
 		} `json:"voucher"`
 		TransactionID         int      `json:"transactionId"`
 		AccountName           string   `json:"accountName"`
@@ -59,19 +65,15 @@ type TransactionStatusResponse struct {
 		PaymentServiceFeature string   `json:"paymentServiceFeature"`
 		PaymentWallet         string   `json:"paymentWallet"`
 		NoFees                bool     `json:"noFees"`
-		PaymentLink           string   `json:"paymentLink"`
-		AcceptURL             string   `json:"acceptUrl"`
-		DeclineURL            string   `json:"declineUrl"`
-		CancelURL             string   `json:"cancelUrl"`
 	} `json:"result"`
 }
 
-// IsFailed checks if the CANAL+ payment has failed
-func (response *TransactionStatusResponse) IsFailed() bool {
+// IsFailed checks if the Orange Money Cashin payment response indicates a failure
+func (response *OrangeMoneyCashinPaymentResponse) IsFailed() bool {
 	return response.Code != 200 || (response.Result != nil && response.Result.Status == "FAILED")
 }
 
-// IsInProgress checks if the CANAL+ payment is still in progress
-func (response *TransactionStatusResponse) IsInProgress() bool {
+// IsInProgress checks if the Orange Money Cashin payment is still in progress
+func (response *OrangeMoneyCashinPaymentResponse) IsInProgress() bool {
 	return response.Code == 200 && response.Result != nil && (response.Result.Status == "PROGRESS" || response.Result.Status == "PENDING" || response.Result.Status == "ACCEPTED" || response.Result.Status == "PAYED")
 }

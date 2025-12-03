@@ -24,7 +24,12 @@ type Client struct {
 	authorizationHeader string
 	walletPin           string
 
-	ENEOPrepaid *eneoPrepaidService
+	ENEOPrepaid       *eneoPrepaidService
+	CanalPlus         *canalPlusService
+	OrangeMoneyCashin *orangeMoneyCashinService
+	OrangeAirtime     *airtimeService
+	CamtelAirtime     *airtimeService
+	MTNAirtime        *airtimeService
 }
 
 // New creates and returns a new *Client from a slice of Option.
@@ -52,6 +57,61 @@ func New(options ...Option) *Client {
 		transactionStatusService: &transactionStatusService[ENEOPrepaidPaymentResponse]{
 			service: &client.common,
 			slug:    "eneo-prepaid-bill-service-feature",
+		},
+	}
+
+	client.CanalPlus = &canalPlusService{
+		paymentService: &paymentService[CanalPlusPaymentRequest, TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "canal-auto-bill-service-feature",
+		},
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "canal-auto-bill-service-feature",
+		},
+	}
+
+	client.OrangeMoneyCashin = &orangeMoneyCashinService{
+		cashinService: &cashinService[OrangeMoneyCashinPaymentRequest, OrangeMoneyCashinPaymentResponse]{
+			service: &client.common,
+			slug:    "orange-money-cashin-service-feature",
+		},
+		transactionStatusService: &transactionStatusService[OrangeMoneyCashinPaymentResponse]{
+			service: &client.common,
+			slug:    "orange-money-cashin-service-feature",
+		},
+	}
+
+	client.OrangeAirtime = &airtimeService{
+		paymentService: &paymentService[AirtimePaymentRequest, TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "orange-airtime-service-feature",
+		},
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "orange-airtime-service-feature",
+		},
+	}
+
+	client.MTNAirtime = &airtimeService{
+		paymentService: &paymentService[AirtimePaymentRequest, TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "mtn-airtime-service-feature",
+		},
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "mtn-airtime-service-feature",
+		},
+	}
+
+	client.CamtelAirtime = &airtimeService{
+		paymentService: &paymentService[AirtimePaymentRequest, TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "camtel-manual-airtime-service-feature",
+		},
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
+			service: &client.common,
+			slug:    "camtel-manual-airtime-service-feature",
 		},
 	}
 
