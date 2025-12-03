@@ -34,6 +34,8 @@ import "github.com/NdoleStudio/afrikpay-go"
   - `POST /api/oss/payment/partner/v1`: Make a payment (airtime, bill, taxes, school)
 - **Transaction Status**:
   - `POST /api/oss/transaction/status/partner/v1`: Get status of specific transaction
+- **Cash In**:
+  - `POST /api/oss/cashin/partner/v1`: Perform a cash in operation
 
 ## Usage
 
