@@ -61,13 +61,17 @@ func New(options ...Option) *Client {
 	}
 
 	client.CanalPlus = &canalPlusService{
+		optionService: &optionService[CanalPlusOptionRequest, CanalPlusOptionResponse]{
+			service: &client.common,
+			slug:    "canal-manual-bill-service-feature",
+		},
 		paymentService: &paymentService[CanalPlusPaymentRequest, TransactionStatusResponse]{
 			service: &client.common,
-			slug:    "canal-auto-bill-service-feature",
+			slug:    "canal-manual-bill-service-feature",
 		},
 		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
 			service: &client.common,
-			slug:    "canal-auto-bill-service-feature",
+			slug:    "canal-manual-bill-service-feature",
 		},
 	}
 

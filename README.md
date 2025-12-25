@@ -36,6 +36,8 @@ import "github.com/NdoleStudio/afrikpay-go"
   - `POST /api/oss/transaction/status/partner/v1`: Get status of specific transaction
 - **Cash In**:
   - `POST /api/oss/cashin/partner/v1`: Perform a cash in operation
+- **Option**:
+  - `POST /api/oss/option/partner/v1`: Get payment options for a service e.g. CANAL+
 
 ## Usage
 
