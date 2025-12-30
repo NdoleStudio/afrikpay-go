@@ -9,7 +9,7 @@ type canalPlusService struct {
 // CanalPlusPaymentRequest is used to create a prepaid payment request for Canal Plus
 type CanalPlusPaymentRequest struct {
 	ReferenceNumber string `json:"referenceNumber"`
-	OptionSlug      string `json:"option_slug"`
+	OptionSlug      string `json:"optionSlug"`
 	Amount          int    `json:"amount"`
 	Phone           string `json:"phone"`
 	Email           string `json:"email"`
