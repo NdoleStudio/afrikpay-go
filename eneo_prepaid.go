@@ -39,20 +39,20 @@ type eneoPrepaidPaymentResponseResult struct {
 	Status       string `json:"status"`
 	CallbackURL  string `json:"callbackUrl"`
 	Voucher      struct {
-		ContactNno         string `json:"contactNno"`
-		DaysLastPurchase   string `json:"daysLastPurchase"`
-		ValeurKwh          string `json:"valeurKwh"`
-		AccNumber          string `json:"accNumber"`
-		Token              string `json:"token"`
-		DateTime           string `json:"dateTime"`
-		AmountDebt         int    `json:"amountDebt"`
-		BalanceDebt        int    `json:"balanceDebt"`
-		ReceiptNo          any    `json:"receiptNo"`
-		LessRound          any    `json:"lessRound"`
-		AmountTender       any    `json:"amountTender"`
-		StatusDateTime     any    `json:"statusDateTime"`
-		StatusUniqueNumber any    `json:"statusUniqueNumber"`
-		Value              string `json:"value"`
+		ContactNno         string  `json:"contactNno"`
+		DaysLastPurchase   string  `json:"daysLastPurchase"`
+		ValeurKwh          string  `json:"valeurKwh"`
+		AccNumber          string  `json:"accNumber"`
+		Token              string  `json:"token"`
+		DateTime           string  `json:"dateTime"`
+		AmountDebt         float64 `json:"amountDebt"`
+		BalanceDebt        float64 `json:"balanceDebt"`
+		ReceiptNo          any     `json:"receiptNo"`
+		LessRound          any     `json:"lessRound"`
+		AmountTender       any     `json:"amountTender"`
+		StatusDateTime     any     `json:"statusDateTime"`
+		StatusUniqueNumber any     `json:"statusUniqueNumber"`
+		Value              string  `json:"value"`
 	} `json:"voucher"`
 	TransactionID       int      `json:"transactionId"`
 	AccountName         string   `json:"accountName"`
