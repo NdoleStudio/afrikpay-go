@@ -24,7 +24,7 @@ type ENEOPrepaidPaymentResponse struct {
 
 // IsFailed checks if the Orange Money Cashin payment response indicates a failure
 func (response *ENEOPrepaidPaymentResponse) IsFailed() bool {
-	return response.Code != 200 || (response.Result != nil && response.Result.Status == "FAILED")
+	return response.Code != 200 || (response.Result != nil && (response.Result.Status == "FAILED" || response.Result.ErrorType == "TransactionExternalIdNotFoundException" || response.Result.ErrorCode == "40633"))
 }
 
 // IsInProgress checks if the Orange Money Cashin payment is still in progress
