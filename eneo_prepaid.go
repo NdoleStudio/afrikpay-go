@@ -24,7 +24,10 @@ type ENEOPrepaidPaymentResponse struct {
 
 // IsFailed checks if the Orange Money Cashin payment response indicates a failure
 func (response *ENEOPrepaidPaymentResponse) IsFailed() bool {
-	return response.Code != 200 || (response.Result != nil && (response.Result.Status == "FAILED" || response.Result.ErrorType == "TransactionExternalIdNotFoundException" || response.Result.ErrorCode == "40633"))
+	return response.Code != 200 ||
+		(response.Result != nil &&
+			(response.Result.Status == "FAILED" || response.Result.ErrorType == "TransactionExternalIdNotFoundException") ||
+			(response.Result.ErrorCode != nil && (*response.Result.ErrorCode == 40633 || *response.Result.ErrorCode == 40614)))
 }
 
 // IsInProgress checks if the Orange Money Cashin payment is still in progress
@@ -33,7 +36,7 @@ func (response *ENEOPrepaidPaymentResponse) IsInProgress() bool {
 }
 
 type eneoPrepaidPaymentResponseResult struct {
-	ErrorCode    any    `json:"errorCode"`
+	ErrorCode    *int   `json:"errorCode"`
 	ErrorMessage any    `json:"errorMessage"`
 	ErrorType    any    `json:"errorType"`
 	Status       string `json:"status"`
