@@ -16,7 +16,7 @@ type TransactionStatusResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Result  *struct {
-		ErrorCode    any    `json:"errorCode"`
+		ErrorCode    *int   `json:"errorCode"`
 		ErrorMessage any    `json:"errorMessage"`
 		ErrorType    any    `json:"errorType"`
 		Status       string `json:"status"`
@@ -68,7 +68,10 @@ type TransactionStatusResponse struct {
 
 // IsFailed checks if the CANAL+ payment has failed
 func (response *TransactionStatusResponse) IsFailed() bool {
-	return response.Code != 200 || (response.Result != nil && response.Result.Status == "FAILED")
+	return response.Code != 200 ||
+		(response.Result != nil &&
+			(response.Result.Status == "FAILED" || response.Result.ErrorType == "TransactionExternalIdNotFoundException") ||
+			(response.Result.ErrorCode != nil && (*response.Result.ErrorCode == 40633 || *response.Result.ErrorCode == 40614)))
 }
 
 // IsInProgress checks if the CANAL+ payment is still in progress
