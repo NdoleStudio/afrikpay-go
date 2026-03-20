@@ -71,7 +71,7 @@ func (response *TransactionStatusResponse) IsFailed() bool {
 	return response.Code != 200 ||
 		(response.Result != nil &&
 			(response.Result.Status == "FAILED" || response.Result.ErrorType == "TransactionExternalIdNotFoundException") ||
-			(response.Result.ErrorCode != nil && (*response.Result.ErrorCode == 40633 || *response.Result.ErrorCode == 40614)))
+			(response.Result.ErrorCode != nil && (*response.Result.ErrorCode == 40633 || *response.Result.ErrorCode == 40614 || *response.Result.ErrorCode == 504)))
 }
 
 // IsInProgress checks if the CANAL+ payment is still in progress
