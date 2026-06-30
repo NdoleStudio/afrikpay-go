@@ -21,8 +21,10 @@ type TransactionStatusResponse struct {
 		ErrorType    any    `json:"errorType"`
 		Status       string `json:"status"`
 		CallbackURL  string `json:"callbackUrl"`
-		Voucher      struct {
-			Value string `json:"value"`
+		Voucher *struct {
+			Value    string `json:"value"`
+			Token    string `json:"token"`
+			ValeurKwh string `json:"valeurKwh"`
 		} `json:"voucher"`
 		TransactionID         int      `json:"transactionId"`
 		AccountName           string   `json:"accountName"`
