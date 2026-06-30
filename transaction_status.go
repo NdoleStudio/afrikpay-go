@@ -78,3 +78,9 @@ func (response *TransactionStatusResponse) IsFailed() bool {
 func (response *TransactionStatusResponse) IsInProgress() bool {
 	return response.Code == 200 && response.Result != nil && (response.Result.Status == "PROGRESS" || response.Result.Status == "PENDING" || response.Result.Status == "ACCEPTED" || response.Result.Status == "PAYED")
 }
+
+// IsNotPerformed checks if the transaction was not performed
+func (response *TransactionStatusResponse) IsNotPerformed() bool {
+	return response.Code == 51314 || response.Code == 40618 ||
+		response.Message == "System response mismatch" || response.Message == "Transaction not found"
+}

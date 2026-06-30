@@ -50,11 +50,11 @@ func New(options ...Option) *Client {
 
 	client.common.client = client
 	client.ENEOPrepaid = &eneoPrepaidService{
-		paymentService: &paymentService[ENEOPrepaidPaymentRequest, ENEOPrepaidPaymentResponse]{
+		paymentService: &paymentService[ENEOPrepaidPaymentRequest, TransactionStatusResponse]{
 			service: &client.common,
 			slug:    "eneo-prepaid-bill-service-feature",
 		},
-		transactionStatusService: &transactionStatusService[ENEOPrepaidPaymentResponse]{
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
 			service: &client.common,
 			slug:    "eneo-prepaid-bill-service-feature",
 		},
@@ -76,11 +76,11 @@ func New(options ...Option) *Client {
 	}
 
 	client.OrangeMoneyCashin = &orangeMoneyCashinService{
-		cashinService: &cashinService[OrangeMoneyCashinPaymentRequest, OrangeMoneyCashinPaymentResponse]{
+		cashinService: &cashinService[OrangeMoneyCashinPaymentRequest, TransactionStatusResponse]{
 			service: &client.common,
 			slug:    "orange-money-cashin-service-feature",
 		},
-		transactionStatusService: &transactionStatusService[OrangeMoneyCashinPaymentResponse]{
+		transactionStatusService: &transactionStatusService[TransactionStatusResponse]{
 			service: &client.common,
 			slug:    "orange-money-cashin-service-feature",
 		},
