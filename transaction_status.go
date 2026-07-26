@@ -21,9 +21,9 @@ type TransactionStatusResponse struct {
 		ErrorType    any    `json:"errorType"`
 		Status       string `json:"status"`
 		CallbackURL  string `json:"callbackUrl"`
-		Voucher *struct {
-			Value    string `json:"value"`
-			Token    string `json:"token"`
+		Voucher      *struct {
+			Value     string `json:"value"`
+			Token     string `json:"token"`
 			ValeurKwh string `json:"valeurKwh"`
 		} `json:"voucher"`
 		TransactionID         int      `json:"transactionId"`
@@ -83,6 +83,5 @@ func (response *TransactionStatusResponse) IsInProgress() bool {
 
 // IsNotPerformed checks if the transaction was not performed
 func (response *TransactionStatusResponse) IsNotPerformed() bool {
-	return response.Code == 51314 || response.Code == 40618 ||
-		response.Message == "System response mismatch" || response.Message == "Transaction not found"
+	return response.Code == 51314 || response.Code == 40618 || response.Message == "System response mismatch" || response.Message == "Transaction not found" || (response.Result != nil && response.Result.ErrorCode != nil && *response.Result.ErrorCode == 40618) || (response.Result != nil && response.Result.ErrorCode != nil && *response.Result.ErrorCode == 51314)
 }
