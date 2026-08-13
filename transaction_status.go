@@ -26,45 +26,47 @@ type TransactionStatusResponse struct {
 			Token     string `json:"token"`
 			ValeurKwh string `json:"valeurKwh"`
 		} `json:"voucher"`
-		TransactionID         int      `json:"transactionId"`
-		AccountName           string   `json:"accountName"`
-		AccountNumber         string   `json:"accountNumber"`
-		Username              string   `json:"username"`
-		ReferenceNumber       string   `json:"referenceNumber"`
-		Amount                int      `json:"amount"`
-		Type                  string   `json:"type"`
-		Service               string   `json:"service"`
-		ServiceName           string   `json:"serviceName"`
-		FinancialFees         int      `json:"financialFees"`
-		FinancialCommission   int      `json:"financialCommission"`
-		ProviderFees          int      `json:"providerFees"`
-		Phone                 string   `json:"phone"`
-		Email                 string   `json:"email"`
-		Code                  string   `json:"code"`
-		OptionSlug            string   `json:"optionSlug"`
-		Description           string   `json:"description"`
-		ExternalID            string   `json:"externalId"`
-		FinancialID           string   `json:"financialId"`
-		ProviderID            string   `json:"providerId"`
-		RequestID             string   `json:"requestId"`
-		Data                  struct{} `json:"data"`
-		RequestStatus         string   `json:"requestStatus"`
-		CommissionID          string   `json:"commissionId"`
-		RollbackID            string   `json:"rollbackId"`
-		TerminalID            int      `json:"terminalId"`
-		TerminalName          string   `json:"terminalName"`
-		TerminalUserAgent     string   `json:"terminalUserAgent"`
-		Reference             struct{} `json:"reference"`
-		IPAddress             string   `json:"ipAddress"`
-		Date                  string   `json:"date"`
-		Signature             string   `json:"signature"`
-		PaymentServiceFeature string   `json:"paymentServiceFeature"`
-		PaymentWallet         string   `json:"paymentWallet"`
-		NoFees                bool     `json:"noFees"`
-		PaymentLink           string   `json:"paymentLink"`
-		AcceptURL             string   `json:"acceptUrl"`
-		DeclineURL            string   `json:"declineUrl"`
-		CancelURL             string   `json:"cancelUrl"`
+		TransactionID       int      `json:"transactionId"`
+		AccountName         string   `json:"accountName"`
+		AccountNumber       string   `json:"accountNumber"`
+		Username            string   `json:"username"`
+		ReferenceNumber     string   `json:"referenceNumber"`
+		Amount              int      `json:"amount"`
+		Type                string   `json:"type"`
+		Service             string   `json:"service"`
+		ServiceName         string   `json:"serviceName"`
+		FinancialFees       int      `json:"financialFees"`
+		FinancialCommission int      `json:"financialCommission"`
+		ProviderFees        int      `json:"providerFees"`
+		Phone               string   `json:"phone"`
+		Email               string   `json:"email"`
+		Code                string   `json:"code"`
+		OptionSlug          string   `json:"optionSlug"`
+		Description         string   `json:"description"`
+		ExternalID          string   `json:"externalId"`
+		FinancialID         string   `json:"financialId"`
+		ProviderID          string   `json:"providerId"`
+		RequestID           string   `json:"requestId"`
+		Data                struct{} `json:"data"`
+		RequestStatus       string   `json:"requestStatus"`
+		CommissionID        string   `json:"commissionId"`
+		RollbackID          string   `json:"rollbackId"`
+		TerminalID          int      `json:"terminalId"`
+		TerminalName        string   `json:"terminalName"`
+		TerminalUserAgent   string   `json:"terminalUserAgent"`
+		Reference           struct {
+			Token string `json:"token"`
+		} `json:"reference"`
+		IPAddress             string `json:"ipAddress"`
+		Date                  string `json:"date"`
+		Signature             string `json:"signature"`
+		PaymentServiceFeature string `json:"paymentServiceFeature"`
+		PaymentWallet         string `json:"paymentWallet"`
+		NoFees                bool   `json:"noFees"`
+		PaymentLink           string `json:"paymentLink"`
+		AcceptURL             string `json:"acceptUrl"`
+		DeclineURL            string `json:"declineUrl"`
+		CancelURL             string `json:"cancelUrl"`
 	} `json:"result"`
 }
 

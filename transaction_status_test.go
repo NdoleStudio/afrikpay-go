@@ -1,10 +1,23 @@
 package afrikpay
 
 import (
+	"encoding/json"
 	"testing"
 
+	"github.com/NdoleStudio/afrikpay-go/internal/stubs"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func TestTransactionStatusResponse_DecodesReferenceToken(t *testing.T) {
+	response := new(TransactionStatusResponse)
+
+	err := json.Unmarshal(stubs.ENEOPrepaidResponse(), response)
+
+	require.NoError(t, err)
+	require.NotNil(t, response.Result)
+	assert.Equal(t, "8844-9878-2415-5207-7373", response.Result.Reference.Token)
+}
 
 func TestTransactionStatusResponse_IsNotPerformed_WithCode51314(t *testing.T) {
 	// Arrange
